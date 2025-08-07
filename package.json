@@ -86,5 +86,3 @@
     "testEnvironment": "node"
   }
 }
-
-// Add packages : @nestjs/jwt @nestjs/mapped-types@nestjs/swagger @nestjs/typeorm class-transformer class-validator dotenv-flow ethers nestjs-zod passport passport-jwt pg rxjs ts-pattern typeorm zod
