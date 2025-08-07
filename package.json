@@ -22,9 +22,24 @@
   "dependencies": {
     "@nestjs/common": "^11.0.1",
     "@nestjs/core": "^11.0.1",
+    "@nestjs/jwt": "^11.0.0",
+    "@nestjs/mapped-types": "^2.1.0",
     "@nestjs/platform-express": "^11.0.1",
+    "@nestjs/swagger": "^11.0.1",
+    "@nestjs/typeorm": "^11.0.1",
+    "class-transformer": "^0.5.1",
+    "class-validator": "^0.14.2",
+    "dotenv-flow": "^4.1.0",
+    "ethers": "^6.15.0",
+    "nestjs-zod": "^4.3.1",
+    "passport": "^0.7.0",
+    "passport-jwt": "^4.0.1",
+    "pg": "^8.16.3",
     "reflect-metadata": "^0.2.2",
-    "rxjs": "^7.8.1"
+    "rxjs": "^7.8.1",
+    "ts-pattern": "^5.8.0",
+    "typeorm": "^0.3.25",
+    "zod": "^4.0.15"
   },
   "devDependencies": {
     "@eslint/eslintrc": "^3.2.0",
@@ -71,3 +86,5 @@
     "testEnvironment": "node"
   }
 }
+
+// Add packages : @nestjs/jwt @nestjs/mapped-types@nestjs/swagger @nestjs/typeorm class-transformer class-validator dotenv-flow ethers nestjs-zod passport passport-jwt pg rxjs ts-pattern typeorm zod
