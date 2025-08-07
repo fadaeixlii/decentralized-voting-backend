@@ -1,7 +1,7 @@
 import { Brand } from 'src/types/brand';
 
 import z from 'zod';
-export type NoneZero = Brand<number, 'NoneZero'>;
+export type NoneZero = number & Brand<number, 'NoneZero'>;
 
 export namespace NoneZero {
   export const is = (x: number): x is NoneZero => {

@@ -1,7 +1,7 @@
 import z from 'zod';
 import { Brand } from 'src/types/brand';
 
-export type GreaterEqThanZero = Brand<number, 'GreaterEqThanZero'>;
+export type GreaterEqThanZero = number & Brand<number, 'GreaterEqThanZero'>;
 
 export namespace GreaterEqThanZero {
   export const is = (x: number): x is GreaterEqThanZero => {
