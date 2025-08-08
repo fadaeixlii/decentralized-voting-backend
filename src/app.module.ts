@@ -3,12 +3,19 @@ import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { TypeOrmConfig } from './shared/typeorm/typeorm.config';
+import { ElectionModule } from './modules/election/election.module';
+import { ElectionOptionModule } from './modules/election-option/election-option.module';
+import { AdminUserModule } from './modules/admin-user/admin-user.module';
 
 @Module({
   imports: [
     TypeOrmModule.forRootAsync({
       useFactory: () => ({ ...TypeOrmConfig }),
     }),
+    // Import your modules here
+    ElectionModule,
+    ElectionOptionModule,
+    AdminUserModule,
   ],
   controllers: [AppController],
   providers: [AppService],
