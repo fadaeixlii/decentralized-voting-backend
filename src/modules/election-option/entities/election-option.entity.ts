@@ -8,13 +8,6 @@ import {
   PrimaryGeneratedColumn,
 } from 'typeorm';
 
-// id: number (primary key, auto-increment, unique identifier)
-// election_id: number (foreign key to Election.id, required, links to parent election)
-// option_text: string (max length 100, required, e.g., "Candidate A")
-// description: text (nullable, additional details about the option)
-// created_at: timestamp (default current time)
-// updated_at: timestamp (default current time, updates on change)
-
 const tableName = 'election-options';
 
 @Entity(tableName)

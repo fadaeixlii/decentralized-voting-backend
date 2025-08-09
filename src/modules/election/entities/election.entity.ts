@@ -10,15 +10,6 @@ import {
   PrimaryGeneratedColumn,
 } from 'typeorm';
 
-// title: string (max length 100, required, e.g., "Board Election 2025")
-// description: text (nullable, detailed election info)
-// start_date: timestamp (required, when voting opens)
-// end_date: timestamp (required, when voting closes)
-// created_by: number (foreign key to AdminUser.id, required, links to admin who created it)
-// status: string (enum: ["draft", "active", "closed"], default "draft", tracks election state)
-// contract_address: string (max length 42, nullable, stores blockchain smart contract address once deployed)
-// max_votes: number (nullable, maximum votes allowed per voter, e.g., 1 for single-choice)
-
 const tableName = 'elections';
 
 @Entity(tableName)
