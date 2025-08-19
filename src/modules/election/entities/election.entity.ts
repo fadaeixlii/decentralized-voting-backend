@@ -1,6 +1,6 @@
 import { AdminUserEntity } from 'src/modules/admin-user/entities/admin-user.entity';
 import { ElectionOptionsEntity } from 'src/modules/election-option/entities/election-option.entity';
-import { ModifyEmbedded } from 'src/shared/typeorm/modify-embeded';
+import { ModifyEmbedded } from 'src/shared/typeorm/modify-embedded';
 import {
   Column,
   Entity,

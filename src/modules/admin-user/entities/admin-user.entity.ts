@@ -1,5 +1,5 @@
 import { ElectionEntity } from 'src/modules/election/entities/election.entity';
-import { ModifyEmbedded } from 'src/shared/typeorm/modify-embeded';
+import { ModifyEmbedded } from 'src/shared/typeorm/modify-embedded';
 import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
 
 const tableName = 'admin_users';

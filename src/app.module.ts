@@ -6,6 +6,7 @@ import { TypeOrmConfig } from './shared/typeorm/typeorm.config';
 import { ElectionModule } from './modules/election/election.module';
 import { ElectionOptionModule } from './modules/election-option/election-option.module';
 import { AdminUserModule } from './modules/admin-user/admin-user.module';
+import { HashingModule } from './shared/modules/hashing/hashing.module';
 
 @Module({
   imports: [
@@ -16,6 +17,7 @@ import { AdminUserModule } from './modules/admin-user/admin-user.module';
     ElectionModule,
     ElectionOptionModule,
     AdminUserModule,
+    HashingModule,
   ],
   controllers: [AppController],
   providers: [AppService],
