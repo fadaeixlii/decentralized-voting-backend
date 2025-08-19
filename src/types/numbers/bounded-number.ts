@@ -24,7 +24,7 @@ export namespace BoundedNumber {
     max: MAX,
   ) =>
     z.number().refine(is(min, max), {
-      error: `Value must be a valid Number between ${min} and ${max}`,
+      message: `Value must be a valid Number between ${min} and ${max}`,
     });
 
   export const mk =

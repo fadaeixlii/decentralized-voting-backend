@@ -13,7 +13,7 @@ export namespace NaturalNumber {
 
   export const zod = z
     .number()
-    .refine(is, { error: 'Value must be a valid NaturalNumber' })
+    .refine(is, { message: 'Value must be a valid NaturalNumber' })
     .brand<'NaturalNumber'>();
 
   export const mk = (num: number) => (is(num) ? num : undefined);

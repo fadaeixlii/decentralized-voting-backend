@@ -23,7 +23,8 @@ export namespace PasswordString {
     MIN_PASSWORD_LENGTH,
     MAX_PASSWORD_LENGTH,
   ).refine(is, {
-    message: 'PasswordString',
+    message:
+      'Invalid password string. Should be between 8 and 96 characters, and contain at least one lowercase letter, one uppercase letter, one number, and one special character',
   });
 
   export const mk = (password: string): PasswordString | undefined => {

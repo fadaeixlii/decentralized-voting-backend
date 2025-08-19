@@ -10,12 +10,12 @@ export namespace Url {
     return z
       .string()
       .refine((url) => urlRegex.test(url.trim()), {
-        error: 'Should be Valid URL',
+        message: 'Should be Valid URL',
       })
       .safeParse(x).success;
   }
   export const zod = z.string().refine(is, {
-    error: 'Should be Valid URL',
+    message: 'Should be Valid URL',
   });
 
   export const mk = (x: string) => (is(x) ? x : undefined);

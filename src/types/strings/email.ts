@@ -12,7 +12,7 @@ export namespace Email {
 
   export const zod = z
     .string()
-    .refine(is, { error: 'Should be a valid email' });
+    .refine(is, { message: 'Should be a valid email' });
 
   export const mk = (x: string): Email | undefined => (is(x) ? x : undefined);
   export const mkUnsafe = (x: string): Email => {

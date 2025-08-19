@@ -9,7 +9,7 @@ export namespace Positive {
     return GreaterEqThanZero.is(x) && x > 0;
   };
   export const zod = GreaterEqThanZero.zod
-    .refine(is, { error: 'Value must be a valid Positive number' })
+    .refine(is, { message: 'Value must be a valid Positive number' })
     .brand<'Positive'>();
 
   export const mk = (num: number) => (is(num) ? num : undefined);

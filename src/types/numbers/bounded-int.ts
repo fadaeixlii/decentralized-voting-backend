@@ -17,7 +17,7 @@ export namespace BoundedInt {
 
   export const zod = <MIN extends Int, MAX extends Int>(min: MIN, max: MAX) =>
     Int.zod.refine(is(min, max), {
-      error: `Value must be a valid Int between ${min} and ${max}`,
+      message: `Value must be a valid Int between ${min} and ${max}`,
     });
 
   export const mk =

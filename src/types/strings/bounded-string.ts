@@ -42,6 +42,6 @@ export namespace BoundedString {
     max: MAX,
   ) =>
     NonEmptyString.zod.refine(is(min, max), {
-      message: `BoundedString`,
+      message: `Invalid string length. Should be between ${min} and ${max}`,
     });
 }

@@ -9,7 +9,7 @@ export namespace GreaterEqThanZero {
   };
   export const zod = z
     .number()
-    .refine(is, { error: 'Should be greater equal than zero' })
+    .refine(is, { message: 'Should be greater equal than zero' })
     .brand<'GreaterEqThanZero'>();
 
   export const mk = (num: number) => (is(num) ? num : undefined);

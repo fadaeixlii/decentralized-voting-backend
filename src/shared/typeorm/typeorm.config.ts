@@ -1,4 +1,5 @@
 import { TypeOrmModuleOptions } from '@nestjs/typeorm';
+import { join } from 'path';
 // import { join } from 'path';
 import {
   POSTGRES_DATABASE,
@@ -19,7 +20,7 @@ export const TypeOrmConfig: TypeOrmModuleOptions = {
   password: POSTGRES_PASSWORD,
   database: POSTGRES_DATABASE,
   // entities: [PostEntity],
-  // entities: [join(__dirname, '..', '..', '**', '*.entity.{ts,js}')],
+  entities: [join(__dirname, '..', '..', '**', '*.entity.{ts,js}')],
   // migrations: [join(__dirname, '..', '..', 'migrations', '*.ts')],
   synchronize: POSTGRES_SYNCHRONIZE,
   dropSchema: POSTGRES_DROP_SCHEMA,

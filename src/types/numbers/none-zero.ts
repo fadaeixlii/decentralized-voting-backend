@@ -11,7 +11,7 @@ export namespace NoneZero {
   };
   export const zod = z
     .number()
-    .refine(is, { error: 'Value must be a non-zero number' })
+    .refine(is, { message: 'Value must be a non-zero number' })
     .brand<'NoneZero'>();
 
   export const mk = (num: number) => (is(num) ? num : undefined);

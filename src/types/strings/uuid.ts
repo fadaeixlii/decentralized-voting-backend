@@ -11,12 +11,12 @@ export namespace UUID {
     return z
       .string()
       .refine((uuid) => UUID_regex.test(uuid.trim()), {
-        error: 'It should be like UUID ',
+        message: 'It should be like UUID ',
       })
       .safeParse(x).success;
   }
 
-  export const zod = z.string().refine(is, { error: 'Should be like UUID' });
+  export const zod = z.string().refine(is, { message: 'Should be like UUID' });
 
   export const mk = (x: string) => (is(x) ? x : undefined);
 

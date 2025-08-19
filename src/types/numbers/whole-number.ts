@@ -12,7 +12,7 @@ export namespace WholeNumber {
     Int.is(x) && GreaterEqThanZero.is(x);
 
   export const zod = Int.zod
-    .refine(is, { error: 'Value must be a valid WholeNumber' })
+    .refine(is, { message: 'Value must be a valid WholeNumber' })
     .brand<'WholeNumber'>();
   export const mk = (num: number) => (is(num) ? num : undefined);
 

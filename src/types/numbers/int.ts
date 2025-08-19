@@ -13,7 +13,7 @@ export namespace Int {
   };
   export const zod = z
     .number()
-    .refine(is, { error: 'Value must be a valid Int' })
+    .refine(is, { message: 'Value must be a valid Int' })
     .brand<'Int'>();
 
   export const mk = (num: number) => (is(num) ? num : undefined);
