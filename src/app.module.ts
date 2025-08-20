@@ -9,15 +9,14 @@ import { AdminUserModule } from './modules/admin-user/admin-user.module';
 import { HashingModule } from './shared/modules/hashing/hashing.module';
 import { AuthModule } from './modules/auth/auth.module';
 import { APP_INTERCEPTOR, APP_PIPE } from '@nestjs/core';
-import { ZodSerializerInterceptor, ZodValidationPipe } from 'nestjs-zod';
+import { ZodValidationPipe } from 'nestjs-zod';
+import { ResponseInterceptor } from './shared/interceptors/response.interceptor';
 
 @Module({
   imports: [
     TypeOrmModule.forRootAsync({
       useFactory: () => ({ ...TypeOrmConfig }),
     }),
-    // Import your modules here
-
     ElectionModule,
     ElectionOptionModule,
     AdminUserModule,
@@ -33,7 +32,7 @@ import { ZodSerializerInterceptor, ZodValidationPipe } from 'nestjs-zod';
     },
     {
       provide: APP_INTERCEPTOR,
-      useClass: ZodSerializerInterceptor,
+      useClass: ResponseInterceptor,
     },
   ],
 })

@@ -18,12 +18,17 @@ export class CreateAdminUserService {
 
   async create(input: CreateAdminUserDto.Dto) {
     // check if admin-user already exists with email or username
-    const existAdmin = await this.repo.findOneBy({
+    const existEmail = await this.repo.findOneBy({
       email: input.email,
+    });
+    if (existEmail) {
+      throw new ConflictException('Email already exists');
+    }
+    const existUsername = await this.repo.findOneBy({
       username: input.username,
     });
-    if (existAdmin) {
-      throw new ConflictException('Admin user already exists');
+    if (existUsername) {
+      throw new ConflictException('Username already exists');
     }
 
     // create admin-user
@@ -31,6 +36,8 @@ export class CreateAdminUserService {
       ...input,
       password: await this.hashingService.hash(input.password),
     });
-    return this.repo.save(adminUser);
+    return this.repo
+      .save(adminUser)
+      .then((adminUser) => adminUser.toAdminUserSimple());
   }
 }

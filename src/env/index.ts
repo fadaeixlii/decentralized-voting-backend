@@ -9,7 +9,6 @@ export const POSTGRES_HOST: string = z
 export const POSTGRES_PORT = z
   .number()
   .default(5432)
-  .optional()
   .parse(
     process.env.POSTGRES_PORT ? parseInt(process.env.POSTGRES_PORT, 10) : 5432,
   );
@@ -31,3 +30,7 @@ export const POSTGRES_SYNCHRONIZE: boolean = z
 export const POSTGRES_DROP_SCHEMA: boolean = z
   .boolean()
   .parse(process.env.POSTGRES_DROP_SCHEMA === 'true' || false);
+
+export const PORT = z
+  .number()
+  .parse(process.env.PORT ? parseInt(process.env.PORT, 10) : undefined);
