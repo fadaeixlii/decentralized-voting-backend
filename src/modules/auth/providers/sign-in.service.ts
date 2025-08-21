@@ -1,33 +1,22 @@
-import { Injectable, UnauthorizedException } from '@nestjs/common';
-import { AdminUserService } from 'src/modules/admin-user/providers/admin-user.service';
-import { BcryptHashingService } from 'src/shared/modules/hashing/providers/bcrypt-hashing.service';
-import { NonEmptyString } from 'src/types/strings';
+import { Injectable } from '@nestjs/common';
+import { AuthSignInAdminDto } from '../dtos/sign-in-auth.dto';
 import { AccessToken } from '../entities/access-token';
 import { RefreshToken } from '../entities/refresh-token';
-import { AuthSignInAdminDto } from '../dtos/sign-in-auth.dto';
+import { AuthService } from './auth.service';
 
 @Injectable()
 export class SignInService {
   constructor(
-    // inject admin-user service
-    private readonly authService: AdminUserService,
-
-    // inject hashing service
-    private readonly hashingService: BcryptHashingService,
+    // inject auth service
+    private readonly authService: AuthService,
   ) {}
 
   async signIn(input: AuthSignInAdminDto.AuthSignInAdminInput) {
     // find admin-user by username
-    const adminUser = await this.authService.findByUsername(input.username);
-    if (
-      !adminUser ||
-      !(await this.hashingService.compare(
-        input.password,
-        NonEmptyString.mkUnsafe(adminUser.password),
-      ))
-    ) {
-      throw new UnauthorizedException('Admin user not found');
-    }
+    const adminUser = await this.authService.validateUser(
+      input.username,
+      input.password,
+    );
 
     const accessTokenPayload: AccessToken.Payload =
       AccessToken.payloadZod.parse({
