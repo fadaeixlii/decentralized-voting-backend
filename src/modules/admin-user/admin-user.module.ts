@@ -4,6 +4,7 @@ import { AdminUserEntity } from './entities/admin-user.entity';
 import { CreateAdminUserService } from './providers/create-admin-user.service';
 import { HashingModule } from 'src/shared/modules/hashing/hashing.module';
 import { AuthModule } from '../auth/auth.module';
+import { AdminUserService } from './providers/admin-user.service';
 
 @Module({
   imports: [
@@ -11,8 +12,7 @@ import { AuthModule } from '../auth/auth.module';
     HashingModule,
     forwardRef(() => AuthModule),
   ],
-  controllers: [],
-  providers: [CreateAdminUserService],
-  exports: [CreateAdminUserService],
+  providers: [CreateAdminUserService, AdminUserService],
+  exports: [CreateAdminUserService, AdminUserService],
 })
 export class AdminUserModule {}

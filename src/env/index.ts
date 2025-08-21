@@ -4,13 +4,17 @@ import { NaturalNumber } from 'src/types/numbers';
 import z from 'zod';
 dotenv.config();
 
-export const PORT = NaturalNumber.zod.parse(process.env.PORT);
+export const PORT = NaturalNumber.zod.parse(
+  process.env.PORT && parseInt(process.env.PORT),
+);
 
 // postgres
 export const POSTGRES_HOST: string = NonEmptyString.zod.parse(
   process.env.POSTGRES_HOST,
 );
-export const POSTGRES_PORT = NaturalNumber.zod.parse(process.env.POSTGRES_PORT);
+export const POSTGRES_PORT = NaturalNumber.zod.parse(
+  process.env.POSTGRES_PORT && parseInt(process.env.POSTGRES_PORT),
+);
 export const POSTGRES_USER: string = NonEmptyString.zod.parse(
   process.env.POSTGRES_USER,
 );
@@ -32,7 +36,7 @@ export const POSTGRES_DROP_SCHEMA: boolean = z
 
 // access token
 export const ACCESS_TOKEN_EXPIRY = NaturalNumber.zod.parse(
-  process.env.ACCESS_TOKEN_EXPIRY,
+  process.env.ACCESS_TOKEN_EXPIRY && parseInt(process.env.ACCESS_TOKEN_EXPIRY),
 );
 export const ACCESS_TOKEN_ISSUER = NonEmptyString.zod.parse(
   process.env.ACCESS_TOKEN_ISSUER,
@@ -46,7 +50,8 @@ export const ACCESS_TOKEN_SECRET = NonEmptyString.zod.parse(
 
 // refresh token
 export const REFRESH_TOKEN_EXPIRY = NaturalNumber.zod.parse(
-  process.env.REFRESH_TOKEN_EXPIRY,
+  process.env.REFRESH_TOKEN_EXPIRY &&
+    parseInt(process.env.REFRESH_TOKEN_EXPIRY),
 );
 export const REFRESH_TOKEN_ISSUER = NonEmptyString.zod.parse(
   process.env.REFRESH_TOKEN_ISSUER,

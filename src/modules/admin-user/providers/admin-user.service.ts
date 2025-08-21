@@ -6,7 +6,7 @@ import { CreateAdminUserService } from './create-admin-user.service';
 import { CreateAdminUserDto } from '../dtos/create-admin-user.dto';
 
 @Injectable()
-export class AuthService {
+export class AdminUserService {
   constructor(
     // admin-user repository
     @InjectRepository(AdminUserEntity)
@@ -19,5 +19,13 @@ export class AuthService {
 
   async register(input: CreateAdminUserDto.Dto) {
     return this.createAdminUserService.create(input);
+  }
+
+  async findByEmail(email: string) {
+    return this.repo.findOneBy({ email });
+  }
+
+  async findByUsername(username: string) {
+    return this.repo.findOneBy({ username });
   }
 }
