@@ -4,12 +4,12 @@ import { NaturalNumber } from './numbers';
 import { NonEmptyString } from './strings';
 import * as JWT from 'jsonwebtoken';
 
-export type JWtToken = Brand<NonEmptyString, 'JWtToken'>;
+export type JwtToken = Brand<NonEmptyString, 'JwtToken'>;
 
 export namespace JwtToken {
   export const jwtRegex = /^[a-zA-Z0-9-._~+/=]{64,256}$/;
 
-  export function is(x: string): x is JWtToken {
+  export function is(x: string): x is JwtToken {
     return jwtRegex.test(x.trim());
   }
 
@@ -17,24 +17,26 @@ export namespace JwtToken {
     message: 'Should be a valid JWT token',
   });
 
-  export const mk = (x: string): JWtToken | undefined =>
+  export const mk = (x: string): JwtToken | undefined =>
     is(x) ? x : undefined;
-  export const mkUnsafe = (x: string): JWtToken => {
+  export const mkUnsafe = (x: string): JwtToken => {
     const n = mk(x);
     if (n === undefined) throw new Error('Should be a valid JWT token');
     return n;
   };
 
+  export type ConfigType = {
+    secret: NonEmptyString;
+    ttl: NaturalNumber;
+    algorithm?: JWT.Algorithm;
+    issuer: NonEmptyString;
+    audience: NonEmptyString;
+  };
+
   export const sign = (
     payload: Record<string, unknown> & { sub: string },
-    config: {
-      secret: NonEmptyString;
-      ttl: NaturalNumber;
-      algorithm?: JWT.Algorithm;
-      issuer: NonEmptyString;
-      audience: NonEmptyString;
-    },
-  ): JWtToken => {
+    config: JwtToken.ConfigType,
+  ): JwtToken => {
     const options: JWT.SignOptions = {
       expiresIn: config.ttl,
       issuer: config.issuer,
@@ -52,7 +54,7 @@ export namespace JwtToken {
   };
 
   export const verify = (
-    token: JWtToken,
+    token: JwtToken,
     secret: NonEmptyString,
   ): JWT.JwtPayload => {
     try {
