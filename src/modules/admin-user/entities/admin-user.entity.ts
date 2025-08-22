@@ -10,7 +10,7 @@ const tableName = 'admin_users';
 @Entity(tableName)
 export class AdminUserEntity {
   @PrimaryGeneratedColumn('uuid')
-  id!: number;
+  id!: string;
 
   @Column({ type: 'varchar', length: 50, unique: true })
   username: string;

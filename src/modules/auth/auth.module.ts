@@ -5,11 +5,12 @@ import { RegisterService } from './providers/register.service';
 import { HashingModule } from 'src/shared/modules/hashing/hashing.module';
 import { AuthService } from './providers/auth.service';
 import { SignInService } from './providers/sign-in.service';
+import { SessionService } from './providers/session.service';
 
 @Module({
   controllers: [AuthController],
   imports: [forwardRef(() => AdminUserModule), HashingModule],
-  providers: [RegisterService, SignInService, AuthService],
+  providers: [RegisterService, SignInService, AuthService, SessionService],
   exports: [AuthService],
 })
 export class AuthModule {}

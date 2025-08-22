@@ -13,7 +13,7 @@ import {
 const tableName = 'sessions';
 
 @Entity(tableName)
-export class Session {
+export class SessionEntity {
   @PrimaryGeneratedColumn('uuid')
   id: string; // sessionId returned to client
 
