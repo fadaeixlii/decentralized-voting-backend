@@ -1,4 +1,5 @@
-import { Injectable } from '@nestjs/common';
+import { NonEmptyString } from './../../../types/strings/none-empty-string';
+import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { AdminUserEntity } from 'src/modules/admin-user/entities/admin-user.entity';
 import { BcryptHashingService } from 'src/shared/modules/hashing/providers/bcrypt-hashing.service';
@@ -7,6 +8,7 @@ import { Repository } from 'typeorm';
 import { RequestSessionAuthDto } from '../dtos/request-session-auth.dto';
 import { RefreshToken } from '../entities/refresh-token';
 import { SessionEntity } from '../entities/session.entity';
+import { SessionId } from '../entities/sessionId.domain';
 
 @Injectable()
 export class SessionService {
@@ -49,5 +51,43 @@ export class SessionService {
       refreshToken,
       sessionId: session.id,
     };
+  }
+
+  async findById(sessionId: SessionId) {
+    return this.sessionRepository.findOneBy({ id: sessionId });
+  }
+
+  async rotate(
+    sessionId: SessionId,
+    refreshToken: RefreshToken,
+    ctx?: RequestSessionAuthDto.RequestSessionAuthInput,
+  ) {
+    // find session and handle exception
+    const session = await this.findById(sessionId);
+    if (!session) throw new UnauthorizedException('Session not found');
+    // compare refresh token with session refresh token hash
+    if (
+      !(await this.hashingService.compare(
+        refreshToken,
+        NonEmptyString.mkUnsafe(session.refreshTokenHash),
+      ))
+    ) {
+      throw new UnauthorizedException('Invalid refresh token');
+    }
+    // generate new refresh token
+    const newRefreshToken = RefreshToken.generate({
+      sub: UUID.mkUnsafe(session.user.id),
+    });
+    const hashNewRefreshToken = await this.hashingService.hash(newRefreshToken);
+    // update session
+    session.refreshTokenHash = hashNewRefreshToken;
+    session.lastUsedAt = new Date();
+    session.userAgentIP = {
+      ip: ctx?.ip,
+      userAgent: ctx?.ua,
+    };
+    await this.sessionRepository.save(session);
+    // return new refresh token
+    return newRefreshToken;
   }
 }
