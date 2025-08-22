@@ -1,9 +1,10 @@
 import { Injectable, UnauthorizedException } from '@nestjs/common';
-import { AuthSignInAdminDto } from '../dtos/sign-in-auth.dto';
-import { AccessToken } from '../entities/access-token';
 import { AdminUserService } from 'src/modules/admin-user/providers/admin-user.service';
 import { BcryptHashingService } from 'src/shared/modules/hashing/providers/bcrypt-hashing.service';
-import { IP, NonEmptyString, PasswordString } from 'src/types/strings';
+import { NonEmptyString, PasswordString } from 'src/types/strings';
+import { RequestSessionAuthDto } from '../dtos/request-session-auth.dto';
+import { AuthSignInAdminDto } from '../dtos/sign-in-auth.dto';
+import { AccessToken } from '../entities/access-token';
 import { SessionService } from './session.service';
 
 @Injectable()
@@ -20,7 +21,7 @@ export class SignInService {
   ) {}
   async signIn(
     input: AuthSignInAdminDto.AuthSignInAdminInput,
-    ctx?: { ua?: string; ip?: IP },
+    ctx?: RequestSessionAuthDto.RequestSessionAuthInput,
   ) {
     // find admin-user by username
     const adminUser = await this.validateUser(input.username, input.password);

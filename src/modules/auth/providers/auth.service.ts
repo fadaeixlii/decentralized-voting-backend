@@ -3,7 +3,7 @@ import { CreateAdminUserDto } from 'src/modules/admin-user/dtos/create-admin-use
 import { CreateAdminUserService } from 'src/modules/admin-user/providers/create-admin-user.service';
 import { AuthSignInAdminDto } from '../dtos/sign-in-auth.dto';
 import { SignInService } from './sign-in.service';
-import { IP } from 'src/types/strings';
+import { RequestSessionAuthDto } from '../dtos/request-session-auth.dto';
 
 @Injectable()
 export class AuthService {
@@ -21,7 +21,7 @@ export class AuthService {
 
   async signIn(
     input: AuthSignInAdminDto.AuthSignInAdminInput,
-    ctx?: { ua?: string; ip?: IP },
+    ctx?: RequestSessionAuthDto.RequestSessionAuthInput,
   ) {
     return this.signInService.signIn(input, ctx);
   }

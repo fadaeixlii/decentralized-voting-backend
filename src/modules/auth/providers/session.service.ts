@@ -1,11 +1,12 @@
 import { Injectable } from '@nestjs/common';
-import { SessionEntity } from '../entities/session.entity';
-import { Repository } from 'typeorm';
-import { AdminUserEntity } from 'src/modules/admin-user/entities/admin-user.entity';
-import { IP, UUID } from 'src/types/strings';
-import { RefreshToken } from '../entities/refresh-token';
-import { BcryptHashingService } from 'src/shared/modules/hashing/providers/bcrypt-hashing.service';
 import { InjectRepository } from '@nestjs/typeorm';
+import { AdminUserEntity } from 'src/modules/admin-user/entities/admin-user.entity';
+import { BcryptHashingService } from 'src/shared/modules/hashing/providers/bcrypt-hashing.service';
+import { UUID } from 'src/types/strings';
+import { Repository } from 'typeorm';
+import { RequestSessionAuthDto } from '../dtos/request-session-auth.dto';
+import { RefreshToken } from '../entities/refresh-token';
+import { SessionEntity } from '../entities/session.entity';
 
 @Injectable()
 export class SessionService {
@@ -18,7 +19,10 @@ export class SessionService {
     private readonly hashingService: BcryptHashingService,
   ) {}
 
-  async create(user: AdminUserEntity, ctx?: { ua?: string; ip?: IP }) {
+  async create(
+    user: AdminUserEntity,
+    ctx?: RequestSessionAuthDto.RequestSessionAuthInput,
+  ) {
     // payload
     const payload: RefreshToken.Payload = {
       sub: UUID.mkUnsafe(user.id),

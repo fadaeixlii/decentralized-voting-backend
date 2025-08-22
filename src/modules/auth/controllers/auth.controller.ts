@@ -4,7 +4,7 @@ import { ApiTags } from '@nestjs/swagger';
 import { AuthSignInAdminDto } from '../dtos/sign-in-auth.dto';
 import { AuthService } from '../providers/auth.service';
 import { Request } from 'express';
-import { IP } from 'src/types/strings';
+import { IP, NonEmptyString } from 'src/types/strings';
 
 @Controller('auth')
 @ApiTags('Auth')
@@ -33,7 +33,7 @@ export class AuthController {
   ) {
     return this.authService.signIn(input, {
       ip,
-      ua: request?.headers?.['user-agent'] as string,
+      ua: NonEmptyString.mk(request?.headers?.['user-agent'] as string),
     });
   }
 }
