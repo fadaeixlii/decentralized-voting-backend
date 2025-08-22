@@ -1,8 +1,10 @@
-import { Body, Controller, Post } from '@nestjs/common';
+import { Body, Controller, Ip, Post, Req } from '@nestjs/common';
 import { AuthRegisterAdminDto } from '../dtos/auth-register-admin.dto';
 import { ApiTags } from '@nestjs/swagger';
 import { AuthSignInAdminDto } from '../dtos/sign-in-auth.dto';
 import { AuthService } from '../providers/auth.service';
+import { Request } from 'express';
+import { IP } from 'src/types/strings';
 
 @Controller('auth')
 @ApiTags('Auth')
@@ -24,7 +26,14 @@ export class AuthController {
   }
 
   @Post('sign-in-admin')
-  async signInAdmin(@Body() input: AuthSignInAdminDto.AuthSignInAdminInput) {
-    return this.authService.signIn(input);
+  async signInAdmin(
+    @Body() input: AuthSignInAdminDto.AuthSignInAdminInput,
+    @Ip() ip: IP,
+    @Req() request: Request,
+  ) {
+    return this.authService.signIn(input, {
+      ip,
+      ua: request?.headers?.['user-agent'] as string,
+    });
   }
 }

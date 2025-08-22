@@ -1,16 +1,17 @@
-import { Inject, Injectable } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { SessionEntity } from '../entities/session.entity';
 import { Repository } from 'typeorm';
 import { AdminUserEntity } from 'src/modules/admin-user/entities/admin-user.entity';
 import { IP, UUID } from 'src/types/strings';
 import { RefreshToken } from '../entities/refresh-token';
 import { BcryptHashingService } from 'src/shared/modules/hashing/providers/bcrypt-hashing.service';
+import { InjectRepository } from '@nestjs/typeorm';
 
 @Injectable()
 export class SessionService {
   constructor(
     // inject session repository
-    @Inject(SessionEntity)
+    @InjectRepository(SessionEntity)
     private readonly sessionRepository: Repository<SessionEntity>,
 
     // inject hashing service

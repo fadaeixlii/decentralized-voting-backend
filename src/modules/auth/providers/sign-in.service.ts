@@ -1,10 +1,10 @@
 import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { AuthSignInAdminDto } from '../dtos/sign-in-auth.dto';
 import { AccessToken } from '../entities/access-token';
-import { RefreshToken } from '../entities/refresh-token';
 import { AdminUserService } from 'src/modules/admin-user/providers/admin-user.service';
 import { BcryptHashingService } from 'src/shared/modules/hashing/providers/bcrypt-hashing.service';
-import { NonEmptyString, PasswordString } from 'src/types/strings';
+import { IP, NonEmptyString, PasswordString } from 'src/types/strings';
+import { SessionService } from './session.service';
 
 @Injectable()
 export class SignInService {
@@ -14,8 +14,14 @@ export class SignInService {
 
     // inject hashing service
     private readonly hashingService: BcryptHashingService,
+
+    // inject session service
+    private readonly sessionService: SessionService,
   ) {}
-  async signIn(input: AuthSignInAdminDto.AuthSignInAdminInput) {
+  async signIn(
+    input: AuthSignInAdminDto.AuthSignInAdminInput,
+    ctx?: { ua?: string; ip?: IP },
+  ) {
     // find admin-user by username
     const adminUser = await this.validateUser(input.username, input.password);
 
@@ -25,15 +31,15 @@ export class SignInService {
         email: adminUser.email,
       });
 
-    const refreshTokenPayload: RefreshToken.Payload =
-      RefreshToken.payloadZod.parse({
-        sub: adminUser.id,
-      });
-
     // generate access token
     const accessToken = AccessToken.generate(accessTokenPayload);
     // generate refresh token
-    const refreshToken = RefreshToken.generate(refreshTokenPayload);
+
+    const { refreshToken } = await this.sessionService.create(adminUser, {
+      ua: ctx?.ua,
+      ip: ctx?.ip,
+    });
+
     // return access token and refresh token
     return { accessToken, refreshToken };
   }

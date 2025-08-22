@@ -7,7 +7,7 @@ import * as JWT from 'jsonwebtoken';
 export type JwtToken = Brand<NonEmptyString, 'JwtToken'>;
 
 export namespace JwtToken {
-  export const jwtRegex = /^[a-zA-Z0-9-._~+/=]{64,256}$/;
+  export const jwtRegex = /^[A-Za-z0-9-_]+\.[A-Za-z0-9-_]+\.[A-Za-z0-9-_]+$/;
 
   export function is(x: string): x is JwtToken {
     return jwtRegex.test(x.trim());
@@ -40,9 +40,8 @@ export namespace JwtToken {
     const options: JWT.SignOptions = {
       expiresIn: config.ttl,
       issuer: config.issuer,
-      subject: payload.sub,
       audience: config.audience,
-      algorithm: config.algorithm,
+      algorithm: config.algorithm ?? 'HS256',
     };
     const token = JWT.sign(payload, config.secret, options);
 
