@@ -88,6 +88,36 @@ export class SessionService {
     };
     await this.sessionRepository.save(session);
     // return new refresh token
-    return newRefreshToken;
+    return {
+      refreshToken: newRefreshToken,
+      sessionId: session.id,
+      user: session.user,
+    };
+  }
+
+  async revoke(sessionId: string, reason?: string) {
+    await this.sessionRepository.update(
+      { id: sessionId },
+      {
+        revoke: {
+          revoked: true,
+          revokedAt: new Date(),
+          revokeReason: reason ?? undefined,
+        },
+      },
+    );
+  }
+
+  async revokeAll(userId: string, reason?: string) {
+    await this.sessionRepository.update(
+      { user: { id: userId }, revoke: { revoked: false } },
+      {
+        revoke: {
+          revoked: true,
+          revokedAt: new Date(),
+          revokeReason: reason ?? undefined,
+        },
+      },
+    );
   }
 }
