@@ -11,7 +11,7 @@ import { AuthModule } from './modules/auth/auth.module';
 import { APP_GUARD, APP_INTERCEPTOR, APP_PIPE } from '@nestjs/core';
 import { ZodValidationPipe } from 'nestjs-zod';
 import { ResponseInterceptor } from './shared/interceptors/response.interceptor';
-import { AccessTokenGuard } from './modules/auth/guard/access-token.guard';
+import { AccessTokenGuard } from './modules/auth/guards/access-token.guard';
 
 @Module({
   imports: [

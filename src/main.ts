@@ -1,10 +1,11 @@
-import { NestFactory } from '@nestjs/core';
+import { NestFactory, Reflector } from '@nestjs/core';
 import { AppModule } from './app.module';
 import { AppExceptionFilter } from './shared/exceptions/app-exceptions.filter';
 import { patchNestJsSwagger, ZodValidationPipe } from 'nestjs-zod';
 // import { NextFunction } from 'express';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import { PORT } from './env';
+import { AuthGuard } from './modules/auth/guards/auth.guard';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
@@ -16,6 +17,9 @@ async function bootstrap() {
   app.useGlobalFilters(new AppExceptionFilter());
   app.useGlobalPipes(new ZodValidationPipe());
   app.enableCors();
+  // Apply AuthGuard globally
+  const reflector = app.get(Reflector);
+  app.useGlobalGuards(new AuthGuard(reflector));
 
   // Ensure patchNestJsSwagger is called before Swagger setup
   patchNestJsSwagger();

@@ -19,6 +19,12 @@ export namespace AccessToken {
     role?: string;
   };
 
+  export type FullPayload = Payload & {
+    iat: number;
+    exp: number;
+    jti: string;
+  };
+
   export const payloadZod = z.object({
     sub: UUID.zod,
     email: NonEmptyString.zod,

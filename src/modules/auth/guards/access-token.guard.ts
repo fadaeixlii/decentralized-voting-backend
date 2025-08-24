@@ -8,6 +8,8 @@ import { Observable } from 'rxjs';
 import { AccessToken } from '../entities/access-token';
 import { Request } from 'express';
 
+export const USER_KEY = 'user';
+
 @Injectable()
 export class AccessTokenGuard implements CanActivate {
   canActivate(
@@ -20,7 +22,8 @@ export class AccessTokenGuard implements CanActivate {
       throw new UnauthorizedException('Token missing');
     }
     try {
-      AccessToken.verify(accessToken);
+      const payload = AccessToken.verify(accessToken);
+      req[USER_KEY] = payload;
       return true;
     } catch {
       throw new UnauthorizedException('Invalid/Expired token');
