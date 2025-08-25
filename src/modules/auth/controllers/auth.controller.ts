@@ -5,6 +5,8 @@ import { AuthSignInAdminDto } from '../dtos/sign-in-auth.dto';
 import { AuthService } from '../providers/auth.service';
 import { Request } from 'express';
 import { IP, NonEmptyString } from 'src/types/strings';
+import { SessionId } from '../entities/sessionId.domain';
+import { RefreshToken } from '../entities/refresh-token';
 
 @Controller('auth')
 @ApiTags('Auth')
@@ -34,6 +36,20 @@ export class AuthController {
     return this.authService.signIn(input, {
       ip,
       ua: NonEmptyString.mk(request?.headers?.['user-agent'] as string),
+    });
+  }
+
+  @Post('refresh-admin')
+  async refresh(
+    @Req() req: Request,
+    @Body() body: { refreshToken: string },
+    @Ip() ip: IP,
+  ) {
+    const sessionId = SessionId.mkUnsafe(req.headers['x-session-id'] as string);
+    const refreshToken = RefreshToken.mkUnsafe(body.refreshToken);
+    return this.authService.refresh(sessionId, refreshToken, {
+      ua: NonEmptyString.mkUnsafe(req.headers['user-agent'] as string),
+      ip,
     });
   }
 }
