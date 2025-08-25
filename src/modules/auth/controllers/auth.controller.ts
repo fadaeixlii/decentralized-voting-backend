@@ -7,6 +7,7 @@ import { Request } from 'express';
 import { IP, NonEmptyString } from 'src/types/strings';
 import { SessionId } from '../entities/sessionId.domain';
 import { RefreshToken } from '../entities/refresh-token';
+import { Public } from '../decorators/auth.decorator';
 
 @Controller('auth')
 @ApiTags('Auth')
@@ -17,6 +18,7 @@ export class AuthController {
   ) {}
 
   @Post('register-admin')
+  @Public()
   async registerAdmin(
     @Body() input: AuthRegisterAdminDto.AuthRegisterAdminInput,
   ) {
@@ -28,6 +30,7 @@ export class AuthController {
   }
 
   @Post('sign-in-admin')
+  @Public()
   async signInAdmin(
     @Body() input: AuthSignInAdminDto.AuthSignInAdminInput,
     @Ip() ip: IP,
@@ -51,5 +54,17 @@ export class AuthController {
       ua: NonEmptyString.mkUnsafe(req.headers['user-agent'] as string),
       ip,
     });
+  }
+
+  @Post('logout-admin')
+  async logout(@Req() req: Request) {
+    const sessionId = SessionId.mkUnsafe(req.headers['x-session-id'] as string);
+    return this.authService.logout(sessionId);
+  }
+
+  @Post('logout-all-admin')
+  async logoutAll(@Req() req: Request) {
+    const sessionId = SessionId.mkUnsafe(req.headers['x-session-id'] as string);
+    return this.authService.logoutAll(sessionId);
   }
 }
