@@ -9,7 +9,7 @@ import { Observable } from 'rxjs';
 import { AccessToken } from '../entities/access-token';
 import { Request } from 'express';
 import { AuthOptions } from '../types/auth.type';
-import { AUTH_OPTIONS_KEY } from '../decorators/auth.decorator';
+import { AUTH_OPTIONS_KEY, IS_PUBLIC_KEY } from '../decorators/auth.decorator';
 import { AuthType } from '../types/auth.type';
 import { Reflector } from '@nestjs/core';
 
@@ -24,6 +24,12 @@ export class AuthGuard implements CanActivate {
   ): boolean | Promise<boolean> | Observable<boolean> {
     const handler = context.getHandler();
     const cls = context.getClass();
+
+    // Check if endpoint is marked as public
+    const isPublic = this.reflector.get<boolean>(IS_PUBLIC_KEY, handler);
+    if (isPublic) {
+      return true;
+    }
 
     const options: AuthOptions = this.reflector.get<AuthOptions>(
       AUTH_OPTIONS_KEY,

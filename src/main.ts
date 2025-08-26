@@ -30,8 +30,8 @@ async function bootstrap() {
 
   const config = new DocumentBuilder()
     .setVersion('1.0')
-    .setTitle('Learning project')
-    .setDescription('This project for testing nestjs')
+    .setTitle('Decentralized Voting')
+    .setDescription('Decentralized Voting API')
     .addServer(`http://localhost:${PORT}`)
     .setLicense('MIT', 'https://opensource.org/license/MIT')
     .setTermsOfService('https://opensource.org/license/MIT')
@@ -54,6 +54,7 @@ async function bootstrap() {
       },
       'session-id',
     )
+    .addSecurityRequirements('session-id')
     .build();
 
   const document = SwaggerModule.createDocument(app, config);
