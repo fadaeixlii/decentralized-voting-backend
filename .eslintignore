@@ -1,0 +1,11 @@
+# Ignore JavaScript files in public directory
+src/public/*.js
+src/public/**/*.js
+
+# Build output
+dist/
+node_modules/
+
+# Config files
+*.config.js
+*.config.mjs

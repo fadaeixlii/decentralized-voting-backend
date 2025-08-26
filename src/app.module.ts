@@ -8,10 +8,9 @@ import { ElectionOptionModule } from './modules/election-option/election-option.
 import { AdminUserModule } from './modules/admin-user/admin-user.module';
 import { HashingModule } from './shared/modules/hashing/hashing.module';
 import { AuthModule } from './modules/auth/auth.module';
-import { APP_GUARD, APP_INTERCEPTOR, APP_PIPE } from '@nestjs/core';
+import { APP_INTERCEPTOR, APP_PIPE } from '@nestjs/core';
 import { ZodValidationPipe } from 'nestjs-zod';
 import { ResponseInterceptor } from './shared/interceptors/response.interceptor';
-import { AccessTokenGuard } from './modules/auth/guards/access-token.guard';
 
 @Module({
   imports: [
@@ -34,10 +33,6 @@ import { AccessTokenGuard } from './modules/auth/guards/access-token.guard';
     {
       provide: APP_INTERCEPTOR,
       useClass: ResponseInterceptor,
-    },
-    {
-      provide: APP_GUARD,
-      useClass: AccessTokenGuard,
     },
   ],
 })

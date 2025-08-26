@@ -1,6 +1,6 @@
 import { Body, Controller, Ip, Post, Req } from '@nestjs/common';
 import { AuthRegisterAdminDto } from '../dtos/auth-register-admin.dto';
-import { ApiTags } from '@nestjs/swagger';
+import { ApiBody, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { AuthSignInAdminDto } from '../dtos/sign-in-auth.dto';
 import { AuthService } from '../providers/auth.service';
 import { Request } from 'express';
@@ -8,6 +8,7 @@ import { IP, NonEmptyString } from 'src/types/strings';
 import { SessionId } from '../entities/sessionId.domain';
 import { RefreshToken } from '../entities/refresh-token';
 import { Public } from '../decorators/auth.decorator';
+import { AuthRefreshTokenDto } from '../dtos/auth-refresh-token.dto';
 
 @Controller('auth')
 @ApiTags('Auth')
@@ -31,6 +32,35 @@ export class AuthController {
 
   @Post('sign-in-admin')
   @Public()
+  @ApiBody({
+    schema: {
+      properties: {
+        username: { type: 'string', example: 'Admin' },
+        password: { type: 'string', example: 'Admin123!@#' },
+      },
+    },
+  })
+  @ApiResponse({
+    status: 200,
+    schema: {
+      properties: {
+        accessToken: {
+          type: 'string',
+          example:
+            'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c',
+        },
+        refreshToken: {
+          type: 'string',
+          example:
+            'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c',
+        },
+        sessionId: {
+          type: 'string',
+          example: 'uuid',
+        },
+      },
+    },
+  })
   async signInAdmin(
     @Body() input: AuthSignInAdminDto.AuthSignInAdminInput,
     @Ip() ip: IP,
@@ -45,7 +75,7 @@ export class AuthController {
   @Post('refresh-admin')
   async refresh(
     @Req() req: Request,
-    @Body() body: { refreshToken: string },
+    @Body() body: AuthRefreshTokenDto.AuthRefreshTokenInput,
     @Ip() ip: IP,
   ) {
     const sessionId = SessionId.mkUnsafe(req.headers['x-session-id'] as string);

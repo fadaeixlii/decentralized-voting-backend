@@ -15,7 +15,7 @@ export const Auth = (options: AuthOptions = { type: AuthType.ADMIN_USER }) => {
 
   if (options.type === AuthType.ADMIN_USER) {
     decorators.push(
-      ApiBearerAuth('jwt'),
+      ApiBearerAuth('access-token'),
       ApiUnauthorizedResponse({ description: 'Invalid or missing JWT' }),
     );
   }

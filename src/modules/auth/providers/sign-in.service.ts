@@ -36,13 +36,16 @@ export class SignInService {
     const accessToken = AccessToken.generate(accessTokenPayload);
     // generate refresh token
 
-    const { refreshToken } = await this.sessionService.create(adminUser, {
-      ua: ctx?.ua,
-      ip: ctx?.ip,
-    });
+    const { refreshToken, sessionId } = await this.sessionService.create(
+      adminUser,
+      {
+        ua: ctx?.ua,
+        ip: ctx?.ip,
+      },
+    );
 
     // return access token and refresh token
-    return { accessToken, refreshToken };
+    return { accessToken, refreshToken, sessionId };
   }
 
   async validateUser(username: NonEmptyString, password: PasswordString) {

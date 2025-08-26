@@ -10,7 +10,7 @@ export namespace JwtToken {
   export const jwtRegex = /^[A-Za-z0-9-_]+\.[A-Za-z0-9-_]+\.[A-Za-z0-9-_]+$/;
 
   export function is(x: string): x is JwtToken {
-    return jwtRegex.test(x.trim());
+    return jwtRegex.test(x?.trim() ?? '');
   }
 
   export const zod = NonEmptyString.zod.refine(is, {
